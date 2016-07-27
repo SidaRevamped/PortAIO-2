@@ -256,7 +256,6 @@ namespace Challenger_Series
                                 E.Cast(target);
                             }
                             if (target.HealthPercent < ObjectManager.Player.HealthPercent &&
-                                target.MoveSpeed > ObjectManager.Player.MoveSpeed - 5 &&
                                 ObjectManager.Player.ServerPosition.LSDistance(target.ServerPosition) > 300)
                             {
                                 E.Cast(target);
