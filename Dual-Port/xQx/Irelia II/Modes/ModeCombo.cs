@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.CodeDom;
 using System.Collections.Generic;
 using System.Drawing;
@@ -265,7 +265,7 @@ using EloBuddy.SDK;
                         }
                     case 2:
                         {
-                            if (t.Health >= ObjectManager.Player.Health)
+                            if (t.Health > ObjectManager.Player.Health)
                             {
                                 Champion.PlayerSpells.CastECombo(t);
                             }
@@ -290,21 +290,20 @@ using EloBuddy.SDK;
                 {
                     R.Cast(t, false, true);
                 }
-
-                if (BladesSpellCount > 0 && BladesSpellCount <= 3)
+            }
+            if (R.IsReady() && BladesSpellCount > 0 && BladesSpellCount <= 3 && t.LSIsValidTarget(R.Range))
+            {
+                var enemy = HeroManager.Enemies.Find(e => e.Health < R.GetDamage(e) * BladesSpellCount && e.LSIsValidTarget(R.Range));
+                if (enemy == null)
                 {
-                    var enemy = HeroManager.Enemies.Find(e => e.Health < R.GetDamage(e) * BladesSpellCount && e.LSIsValidTarget(R.Range));
-                    if (enemy == null)
+                    foreach (var e in HeroManager.Enemies.Where(e => e.LSIsValidTarget(R.Range)))
                     {
-                        foreach (var e in HeroManager.Enemies.Where(e => e.LSIsValidTarget(R.Range)))
-                        {
-                            R.Cast(e);
-                        }
+                        R.Cast(e);
                     }
-                    else
-                    {
-                        R.Cast(enemy);
-                    }
+                }
+                else
+                {
+                    R.Cast(enemy);
                 }
             }
         }
